@@ -1,10 +1,23 @@
+/**
+ * Main class
+ */
 public class Main{
+
+  /**
+   * A helper for creating a new Contact instance.
+   */
+  public Contact createContact(String name, String email, Contact.Type contactType) {
+    Contact newContact = new Contact(name, email);
+    newContact.type = contactType;
+    System.out.println("\nA new contact has been added :\n------------------------------\n " + newContact.toString());
+    return newContact;
+  }
+
+  /**
+   * Entry point of this program.
+   */
   public static void main(String []args){
-    String name = "Diana Prince";
-    String email = "diana.prince@gmail.com";
-    Contact contact = new Contact(name, email);
-    contact.type = Contact.Type.FRIEND;
-    System.out.println("\nMy 1st Contact is:\n------------------\n " + contact.toString());
-    // System.out.println("TODO: Implement logic which bootstraping contacts service/agent.");
+    Main main = new Main();
+    main.createContact("Diana Prince", "diana.prince@gmail.com", Contact.Type.FRIEND);
   }
 }
