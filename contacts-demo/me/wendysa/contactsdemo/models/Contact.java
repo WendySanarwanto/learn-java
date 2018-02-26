@@ -1,8 +1,10 @@
+package me.wendysa.contactsdemo.models;
+
 /**
  * Contact entity class.
  */
 public class Contact{
-  enum Type { BUSINESS, FAMILY, FRIEND };
+  public enum Type { BUSINESS, FAMILY, FRIEND };
   Type type;
   private String name;
   private String email;
@@ -26,6 +28,14 @@ public class Contact{
 
   public String getEmail() {
     return this.email;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  public Type getType() {
+    return this.type;
   }
 
   public String toString() {

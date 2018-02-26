@@ -1,3 +1,7 @@
+package me.wendysa.contactsdemo;
+
+import me.wendysa.contactsdemo.models.*;
+
 /**
  * Main class
  */
@@ -8,7 +12,7 @@ public class Main{
    */
   public Contact createContact(String name, String email, Contact.Type contactType) {
     Contact newContact = new Contact(name, email);
-    newContact.type = contactType;
+    newContact.setType(contactType);
     System.out.println("\nA new contact has been added :\n------------------------------\n " + newContact.toString());
     return newContact;
   }
