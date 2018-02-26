@@ -1,1 +1,1 @@
-./build.sh && java me.wendysa.contactsdemo.Main
+./build.sh && ./run.sh
