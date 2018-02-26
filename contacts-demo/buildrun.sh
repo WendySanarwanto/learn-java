@@ -1,1 +1,1 @@
-rm -rf *.class && javac *.java && java Main
+./build.sh && java me.wendysa.contactsdemo.Main
