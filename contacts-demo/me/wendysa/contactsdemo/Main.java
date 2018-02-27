@@ -41,7 +41,7 @@ public class Main{
 
     try {
       Contact newContact = main.contactService.createContact("Diana Prince", "diana.prince@gmail.com", Contact.Type.FRIEND);
-      main.keepNewContact(newContact);
+      main.contactService.keepNewContact(newContact, main.contacts);
 
       newContact = main.contactService.createContact("Steve Rogers", "steve.rogers@gmail.com", Contact.Type.BUSINESS);
       main.contactService.keepNewContact(newContact, main.contacts);
