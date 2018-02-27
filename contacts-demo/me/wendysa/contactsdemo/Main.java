@@ -1,40 +1,20 @@
 package me.wendysa.contactsdemo;
 
 import me.wendysa.contactsdemo.exceptions.*;
+import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
+import me.wendysa.contactsdemo.services.*;
 
 /**
  * Main class
  */
 public class Main{
-  private Contact[] contacts;
+  Contact[] contacts;
+  private IContactBehaviour contactService;
 
-  public Main() {
+  public Main(IContactBehaviour contactService) {
     this.contacts = new Contact[10];
-  }
-
-  /**
-   * A helper for creating a new Contact instance.
-   */
-  public Contact createContact(String name, String email, Contact.Type contactType) {
-    Contact newContact = new Contact(name, email);
-    newContact.setType(contactType);
-    System.out.println( String.format("\nA new contact has been created :\n------------------------------\n %s", newContact.toString()) );
-    return newContact;
-  }
-
-  /**
-   * A helper for keeping a new contact in Contacts list.
-   */
-  public void keepNewContact(Contact contact) throws NoAvailableSlotException {
-    // find available slot in contact list:
-    for(int i=0; i< contacts.length; i++){
-      if (contacts[i] == null) {
-        contacts[i] = contact;
-        return;
-      }
-    }
-    throw new NoAvailableSlotException();
+    this.contactService = contactService;
   }
 
   /**
@@ -56,13 +36,15 @@ public class Main{
    * Entry point of this program.
    */
   public static void main(String []args){
-    Main main = new Main();
+    // Note - Generally, we do not instantiate the dependency directly using new. Instead, we usually use DI framework to inject the dependency instance.
+    Main main = new Main(new ContactService());
+
     try {
-      Contact newContact = main.createContact("Diana Prince", "diana.prince@gmail.com", Contact.Type.FRIEND);
+      Contact newContact = main.contactService.createContact("Diana Prince", "diana.prince@gmail.com", Contact.Type.FRIEND);
       main.keepNewContact(newContact);
 
-      newContact = main.createContact("Steve Rogers", "steve.rogers@gmail.com", Contact.Type.BUSINESS);
-      main.keepNewContact(newContact);
+      newContact = main.contactService.createContact("Steve Rogers", "steve.rogers@gmail.com", Contact.Type.BUSINESS);
+      main.contactService.keepNewContact(newContact, main.contacts);
 
       main.printContactsList();
     } catch(Exception err) {
