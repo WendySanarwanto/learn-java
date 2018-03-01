@@ -1,25 +1,27 @@
 package me.wendysa.contactsdemo.services;
 
 import me.wendysa.contactsdemo.contracts.*;
-import me.wendysa.contactsdemo.exceptions.*;
 import me.wendysa.contactsdemo.models.*;
+import me.wendysa.contactsdemo.repositories.*;
 
 public class ContactService extends ModelServiceBase<Contact> implements IContactBehaviour {
-  private Contact[] contactsList;
+  private final ContactRepository repository;
+
+  public ContactService(ContactRepository repository) {
+    this.repository = repository;
+  }
 
   public Contact createContact(String name, String email, Contact.Type contactType)  {
     Contact newContact = new Contact(name, email);
     newContact.setType(contactType);
-    return newContact;
+    Contact pushedContact = this.repository.push(newContact);
+    if (pushedContact != null) {
+      this.onContactPushed(pushedContact);
+    }
+    return pushedContact;
   }
 
-  @Override
-  public void keepNewModelInstance(Contact newModel, Contact[] modelsList) throws NoAvailableSlotException { 
-    super.keepNewModelInstance(newModel, modelsList);
-    System.out.println( String.format("\nA new contact has been created :\n------------------------------\n %s", newModel.toString()) );
-  }
-
-  public void keepNewContact(Contact newContact, Contact[] contactsList) throws NoAvailableSlotException {
-    this.keepNewModelInstance(newContact, contactsList);
+  private void onContactPushed(Contact pushedContact) {
+    System.out.println( String.format("\nA new contact has been created :\n------------------------------\n %s", pushedContact.toString()) );
   }
 }
