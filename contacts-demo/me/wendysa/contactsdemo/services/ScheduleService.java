@@ -23,8 +23,8 @@ public class ScheduleService implements ISchedulable {
     Date dateBegin = sdf.parse(beginDate, new ParsePosition(0));
     Date dateEnd = sdf.parse(endDate, new ParsePosition(0));
     
-    System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateBegin: %s", dateBegin));
-    System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateEnd: %s", dateEnd));
+    // System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateBegin: %s", dateBegin));
+    // System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateEnd: %s", dateEnd));
 
     Schedule newSchedule = new Schedule(dateBegin, dateEnd, participants, description, organiser, title);
 
