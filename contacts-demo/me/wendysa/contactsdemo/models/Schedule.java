@@ -80,7 +80,8 @@ public class Schedule {
       sbParticipants.append(String.format("%s ", this.participants[i].getName()));
     }
     sb.append(String.format("\nParticipants : %s\n", sbParticipants.toString()));
-    sb.append(String.format("\nDescription  : \n%s", description));
+    sb.append(String.format("\nOrganiser    : %s\n", organiser));
+    sb.append(String.format("Description  : \n%s", description));
     return sb.toString();
   }
 }
