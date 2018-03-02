@@ -1,8 +1,9 @@
 package me.wendysa.contactsdemo;
 
-import me.wendysa.contactsdemo.exceptions.*;
+import java.util.*;
 
 import me.wendysa.contactsdemo.contracts.*;
+import me.wendysa.contactsdemo.exceptions.*;
 import me.wendysa.contactsdemo.models.Contact;
 import me.wendysa.contactsdemo.models.Schedule;
 import me.wendysa.contactsdemo.repositories.*;
@@ -13,41 +14,58 @@ import me.wendysa.contactsdemo.services.ScheduleService;;
  * Main class
  */
 public class Main {
-  Contact[] contacts;
   IContactBehaviour contactService;
   ISchedulable scheduleService;
 
-  public Main(IContactBehaviour contactService, ISchedulable scheduleService) {
-    this.contacts = new Contact[10];
+  Main(IContactBehaviour contactService, ISchedulable scheduleService) {
     this.contactService = contactService;
     this.scheduleService = scheduleService;
   }
 
-  public Schedule createNewSchedule(String beginDate, String endDate, String description, String organiser,
+  Schedule createNewSchedule(String beginDate, String endDate, String description, String organiser,
       String title, Contact[] participants) throws DoScheduleException {
     Schedule createdSchedule = this.scheduleService.doSchedule(beginDate, endDate, participants, description, organiser,
         title);
     if (createdSchedule == null) {
       throw new DoScheduleException();
     }
-    // Display formatted schedule
-    String createdScheduleInfo = String.format("%s", createdSchedule.toString());
-    System.out.println(createdScheduleInfo);
     return createdSchedule;
   }
 
   /**
    * A helper for printing contacts list on command line terminal.
    */
-  public void printContactsList() {
+  void printContactsList() {
     System.out.println("\n==================================");
     System.out.println("\nBelow is the current contacts list:\n");
     System.out.println("==================================:\n");
-    for (int i = 0; i < contacts.length; i++) {
-      if (contacts[i] != null) {
-        String printedContact = String.format("%s\n----------\n", contacts[i]);
-        System.out.println(printedContact);
-      }
+
+    List<Contact> contacts = this.contactService.getContacts();
+    Iterator<Contact> iterator = contacts.iterator();
+    
+    while(iterator.hasNext()) {
+      Contact contact = iterator.next();
+      String printedContact = String.format("%s\n----------\n", contact);
+      System.out.println(printedContact);
+    }
+
+    // NOTE - The usual way we loop a list by using for loop.
+    // for (int i = 0; i < contacts.length; i++) {
+    //   if (contacts[i] != null) {
+    //     String printedContact = String.format("%s\n----------\n", contacts[i]);
+    //     System.out.println(printedContact);
+    //   }
+    // }
+  }
+
+  void printSchedules(List<Schedule> schedules) {
+    Iterator<Schedule> scheduleIterator = schedules.iterator();
+
+    while(scheduleIterator.hasNext()) {
+      // Display formatted schedule
+      Schedule schedule = scheduleIterator.next();
+      String createdScheduleInfo = String.format("%s", schedule.toString());
+      System.out.println(createdScheduleInfo);      
     }
   }
 
@@ -65,6 +83,9 @@ public class Main {
 
       Contact steveContact = main.contactService.createContact("Steve Rogers", "steve.rogers@gmail.com",
           Contact.Type.BUSINESS);
+
+      Contact nataliaContact = main.contactService.createContact("Natalia Romanova", "natalia.romanova@gmail.com",
+          Contact.Type.FRIEND);
 
       main.printContactsList();
 
@@ -85,7 +106,18 @@ public class Main {
       organiser = "Wendy Sanarwanto";
       title = "Team weekly meeting.";
       main.createNewSchedule(beginDate, endDate, description, organiser, title, new Contact[] { dianaContact, steveContact });
-      
+
+      beginDate = "2018-03-30 19:00";
+      endDate = "2018-03-31 02:00";
+      description = "\n\tHello Ladies,\n\n\tJust a gentle reminder to you that we have an appointment to meet you all at usual club, in this weekend. So, I'll see you all in there.\n\n\tCheers.\n";
+      organiser = "Wendy Sanarwanto";
+      title = "Weekend's Hangout.";
+      main.createNewSchedule(beginDate, endDate, description, organiser, title, new Contact[] { dianaContact, nataliaContact });
+
+      // Get schedules
+      List<Schedule> schedules = main.scheduleService.getSchedules(Optional.of(ISchedulable.SortBy.START_DATE_DESC));
+      main.printSchedules(schedules);
+
     } catch (Exception err) {
       System.out.println(String.format("[ERROR] - Details: %s. Stacktrace: \n", err));
       err.printStackTrace();
