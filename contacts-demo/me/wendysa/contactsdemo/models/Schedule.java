@@ -70,17 +70,20 @@ public class Schedule {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("\n------------------\n");
-    sb.append(title);
+    sb.append(String.format("%s\n", title));
     SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, @ hh:mm a");
     // System.out.println(String.format("beginDate: %s", sdf.format(beginDate)));
     sb.append(String.format("\nStart        : %s", sdf.format(beginDate)));
     sb.append(String.format("\nEnd          : %s", sdf.format(endDate)));
     StringBuilder sbParticipants = new StringBuilder();
     for(int i=0; i < this.participants.length; i++){
-      sbParticipants.append(String.format("%s ", this.participants[i].getName()));
+      sbParticipants.append(String.format("%s", this.participants[i].getName()));
+      if (i != participants.length-1) {
+        sbParticipants.append(", ");
+      }
     }
     sb.append(String.format("\nParticipants : %s\n", sbParticipants.toString()));
-    sb.append(String.format("\nOrganiser    : %s\n", organiser));
+    sb.append(String.format("Organiser    : %s\n", organiser));
     sb.append(String.format("Description  : \n%s", description));
     return sb.toString();
   }
