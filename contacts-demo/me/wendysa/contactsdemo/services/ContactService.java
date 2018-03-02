@@ -1,5 +1,7 @@
 package me.wendysa.contactsdemo.services;
 
+import java.util.*;
+
 import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
 import me.wendysa.contactsdemo.repositories.*;
@@ -19,6 +21,11 @@ public class ContactService extends ModelServiceBase<Contact> implements IContac
       this.onContactPushed(pushedContact);
     }
     return pushedContact;
+  }
+
+  @Override
+  public List<Contact> getContacts() {
+    return this.repository.getAll();
   }
 
   private void onContactPushed(Contact pushedContact) {

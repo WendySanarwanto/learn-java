@@ -11,4 +11,12 @@ public class ContactRepository {
     this.storage.put(email, newContact);
     return newContact;
   }
+
+  public List<Contact> getAll() {
+    // Get storage's iterator
+    Enumeration<Contact> contactEnum = this.storage.elements();
+    ArrayList<Contact> contactsList = Collections.list(contactEnum);
+    // return contactsList.toArray(new Contact[contactsList.size()]);
+    return contactsList;
+  }
 }
