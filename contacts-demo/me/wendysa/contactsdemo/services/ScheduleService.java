@@ -2,7 +2,8 @@ package me.wendysa.contactsdemo.services;
 
 import java.text.*;
 import java.util.Date;
-
+import java.util.List;
+import java.util.Optional;
 import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
 import me.wendysa.contactsdemo.repositories.ScheduleRepository;
@@ -29,5 +30,19 @@ public class ScheduleService implements ISchedulable {
     Schedule newSchedule = new Schedule(dateBegin, dateEnd, participants, description, organiser, title);
 
     return this.repository.push(newSchedule) ? newSchedule : null;
+  }
+
+  @Override
+  public List<Schedule> getSchedules(Optional<SortBy> sortBy_) {
+    SortBy sortBy = sortBy_ != null ? sortBy_.get() : SortBy.START_DATE_ASC;
+
+    // Ensure that returned Schedule List honour sortBy parameter.
+    List<Schedule> schedules = repository.getAll();
+    if (sortBy == SortBy.START_DATE_ASC) {
+      schedules.sort((left, right) -> (int) left.getBeginDate().getTime() - (int)right.getBeginDate().getTime() );
+    } else {
+      schedules.sort((left, right) -> (int) right.getBeginDate().getTime() - (int)left.getBeginDate().getTime() );
+    }
+    return schedules;
   }
 }

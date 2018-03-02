@@ -9,4 +9,8 @@ public class ScheduleRepository {
   public boolean push(Schedule newSchedule) {
     return storage.add(newSchedule);
   }
+
+  public List<Schedule> getAll() {
+    return Collections.synchronizedList(storage);
+  }
 }
