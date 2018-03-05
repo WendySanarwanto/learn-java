@@ -4,7 +4,16 @@ package me.wendysa.contactsdemo.models;
  * Contact entity class.
  */
 public class Contact{
-  public enum Type { BUSINESS, FAMILY, FRIEND };
+
+  public enum Type {
+    BUSINESS("Business"), FAMILY("Family"), FRIEND("Friend");
+
+    private String value;
+    private Type(String value){
+      this.value = value;
+    }
+  };
+
   Type type;
   private String name;
   private String email;
@@ -41,6 +50,6 @@ public class Contact{
   public String toString() {
     return "\nName: "+this.name+"\n"+
            "Email: "+this.email+"\n"+
-           "Type: "+this.type+"\n";
+           "Type: "+this.type.value+"\n";
   }
 }
