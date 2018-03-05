@@ -9,12 +9,11 @@ import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
 import me.wendysa.contactsdemo.repositories.ScheduleRepository;
 
-public class ScheduleService implements ISchedulable {
-  private ScheduleRepository repository;
+public class ScheduleService extends ServiceBase<Schedule> implements ISchedulable {
   public final static String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm";
 
   public ScheduleService(ScheduleRepository repository) {
-    this.repository = repository;
+    super(repository);
   }
 
   @Override
@@ -29,14 +28,13 @@ public class ScheduleService implements ISchedulable {
     // System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateEnd: %s", dateEnd));
 
     Schedule newSchedule = new Schedule(dateBegin, dateEnd, participants, description, organiser, title);
-
-    return this.repository.push(newSchedule) ? newSchedule : null;
+    return this.push(newSchedule);
   }
 
   @Override
   public List<Schedule> getSchedules(Optional<SortBy> sortBy_) {
     SortBy sortBy = sortBy_ != null ? sortBy_.get() : SortBy.START_DATE_ASC;
-    List<Schedule> schedules = repository.getAll();
+    List<Schedule> schedules = this.getAll();
 
     if (sortBy == SortBy.START_DATE_ASC) {
       schedules.sort((left, right) -> (int) left.getBeginDate().getTime() - (int)right.getBeginDate().getTime() );
@@ -50,7 +48,7 @@ public class ScheduleService implements ISchedulable {
   @Override
   public List<Schedule> getSchedulesByParticipant(Optional<Contact> participant_) {
     Contact participant = participant_ != null ? participant_.get() : null;
-    List<Schedule> schedules = repository.getAll();
+    List<Schedule> schedules = this.getAll();
 
     return schedules.stream()
             .filter(schedule->schedule.getParticipants().indexOf(participant) > -1)

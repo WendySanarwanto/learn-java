@@ -1,9 +1,11 @@
 package me.wendysa.contactsdemo.repositories;
 
 import java.util.*;
-import me.wendysa.contactsdemo.models.*;
 
-public class ContactRepository {
+import me.wendysa.contactsdemo.contracts.IRepository;
+import me.wendysa.contactsdemo.models.Contact;
+
+public class ContactRepository implements IRepository<Contact> {
   private final Hashtable<String, Contact> storage = new Hashtable<String, Contact>();
 
   public Contact push(Contact newContact) {

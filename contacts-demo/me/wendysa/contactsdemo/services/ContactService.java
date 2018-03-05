@@ -6,17 +6,15 @@ import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
 import me.wendysa.contactsdemo.repositories.*;
 
-public class ContactService extends ModelServiceBase<Contact> implements IContactBehaviour {
-  private final ContactRepository repository;
-
+public class ContactService extends ServiceBase<Contact> implements IContactBehaviour {
   public ContactService(ContactRepository repository) {
-    this.repository = repository;
+    super(repository);
   }
 
   public Contact createContact(String name, String email, Contact.Type contactType)  {
     Contact newContact = new Contact(name, email);
     newContact.setType(contactType);
-    Contact pushedContact = this.repository.push(newContact);
+    Contact pushedContact = this.push(newContact);
     if (pushedContact != null) {
       this.onContactPushed(pushedContact);
     }
@@ -25,7 +23,7 @@ public class ContactService extends ModelServiceBase<Contact> implements IContac
 
   @Override
   public List<Contact> getContacts() {
-    return this.repository.getAll();
+    return this.getAll();
   }
 
   private void onContactPushed(Contact pushedContact) {
