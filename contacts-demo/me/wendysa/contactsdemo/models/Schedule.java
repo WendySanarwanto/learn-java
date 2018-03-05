@@ -6,12 +6,12 @@ import java.util.*;
 public class Schedule {
   private Date beginDate;
   private Date endDate;
-  private Contact[] participants;
+  private List<Contact> participants;
   private String description;
   private String organiser;
   private String title;
 
-  public Schedule(Date beginDate, Date endDate, Contact[] participants, String description, String organiser,
+  public Schedule(Date beginDate, Date endDate, List<Contact> participants, String description, String organiser,
       String title) {
     this.title = title;
     this.beginDate = beginDate;
@@ -38,7 +38,7 @@ public class Schedule {
     this.endDate = endDate;
   }
 
-  public Contact[] getParticipants() {
+  public List<Contact> getParticipants() {
     return this.participants;
   }
 
@@ -76,12 +76,17 @@ public class Schedule {
     sb.append(String.format("\nStart        : %s", sdf.format(beginDate)));
     sb.append(String.format("\nEnd          : %s", sdf.format(endDate)));
     StringBuilder sbParticipants = new StringBuilder();
-    for(int i=0; i < this.participants.length; i++){
-      sbParticipants.append(String.format("%s", this.participants[i].getName()));
-      if (i != participants.length-1) {
+
+    Iterator<Contact> participantIterator = this.participants.iterator();
+    while(participantIterator.hasNext()) {
+      Contact participant = participantIterator.next();
+      sbParticipants.append(String.format("%s", participant.getName()));
+
+      if (participantIterator.hasNext()){
         sbParticipants.append(", ");
       }
     }
+
     sb.append(String.format("\nParticipants : %s\n", sbParticipants.toString()));
     sb.append(String.format("Organiser    : %s\n", organiser));
     sb.append(String.format("Description  : \n%s", description));
