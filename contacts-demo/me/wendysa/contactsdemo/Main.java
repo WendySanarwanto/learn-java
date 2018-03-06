@@ -92,8 +92,7 @@ public class Main {
    */
   public static void main(String[] args) {
     // Note - Generally, we do not instantiate the dependency directly using new. Instead, we usually use DI framework to inject the dependency instance.
-    Main main = new Main(new ContactService(new ContactRepository()),
-                          new ScheduleService(new ScheduleRepository()));
+    Main main = new Main(ServiceFactory.getContactService(), ServiceFactory.getScheduleService());
 
     try {
       Contact dianaContact = main.contactService.createContact("Diana Prince", "diana.prince@gmail.com",
