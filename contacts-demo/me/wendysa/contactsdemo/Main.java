@@ -6,9 +6,6 @@ import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.exceptions.*;
 import me.wendysa.contactsdemo.models.Contact;
 import me.wendysa.contactsdemo.models.Schedule;
-import me.wendysa.contactsdemo.repositories.*;
-import me.wendysa.contactsdemo.services.ContactService;
-import me.wendysa.contactsdemo.services.ScheduleService;;
 
 /**
  * Main class
