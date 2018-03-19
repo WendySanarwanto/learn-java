@@ -4,6 +4,9 @@
 # Build the application's .java files with its dependencies.
 find . -name "*.java" -print | xargs javac -cp ".;../dependencies/**.jar"  -d ./dist && \
 
+# Cleanup .class files within source directory
+rm -rf ./me/wendysa/contactsdemo/**/*.class ./me/wendysa/contactsdemo/*.class
+
 # created /lib sub-directory inside /dist directory
 mkdir ./dist/lib && \
 
