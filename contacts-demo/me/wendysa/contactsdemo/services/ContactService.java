@@ -4,10 +4,9 @@ import java.util.*;
 
 import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
-import me.wendysa.contactsdemo.repositories.*;
 
 public class ContactService extends ServiceBase<Contact> implements IContactBehaviour {
-  public ContactService(ContactRepository repository) {
+  public ContactService(IRepository<Contact> repository) {
     super(repository);
   }
 
