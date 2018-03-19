@@ -1,1 +1,1 @@
-java me.wendysa.contactsdemo.Main
+java -jar ./dist/contacts-demo.jar
