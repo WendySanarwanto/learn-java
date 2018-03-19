@@ -88,10 +88,13 @@ public class Main {
    * Entry point of this program.
    */
   public static void main(String[] args) {
+    String dbType = Main.getDbTypeArgument(args);
+
     // Note - Generally, we do not instantiate the dependency directly using new. Instead, we usually use DI framework to inject the dependency instance.
-    Main main = new Main(ServiceFactory.getContactService(), ServiceFactory.getScheduleService());
+    Main main = new Main(ServiceFactory.getContactService(dbType), ServiceFactory.getScheduleService());
 
     try {
+      // Create new Contact records.
       Contact dianaContact = main.contactService.createContact("Diana Prince", "diana.prince@gmail.com",
           Contact.Type.FRIEND);
 
@@ -101,11 +104,12 @@ public class Main {
       Contact nataliaContact = main.contactService.createContact("Natalia Romanova", "natalia.romanova@gmail.com",
           Contact.Type.FRIEND);
 
+      // Retrieve Contract records and print them on console.
       main.printContactsList();
 
       // System.out.println(String.format("[INFO] - Creating a meeting schedule for %s ...", dianaContact.getName()));
 
-      // Create a schedule with an existing contact
+      // Create Schedules records with existing contacts
       String beginDate = "2018-04-03 17:00";
       String endDate = "2018-04-03 23:00";
       String description = "\n\tDiana,\n\n\tWe've just collected 3 investment prospects at last week ago. In this saturday, let's meet and discuss about these prospects.\n\n\tCheers.\n";
@@ -130,7 +134,7 @@ public class Main {
       main.printAllSchedules();
 
       // Get schedule(s) which have Natalia as participant
-      main.printSchedulesByParticipant(nataliaContact);      
+      main.printSchedulesByParticipant(nataliaContact);
 
     } catch (Exception err) {
       System.out.println(String.format("[ERROR] - Details: %s. Stacktrace: \n", err));
@@ -138,4 +142,18 @@ public class Main {
     }
   }
 
-}
+  /**
+   * A helper for looking up `-db` application's argument.
+   */
+  private static String getDbTypeArgument(String[] args) {
+    Iterator<String> argIterator = Arrays.asList(args).iterator();
+    while(argIterator.hasNext()) {
+      String arg = argIterator.next();
+      if (arg.equals("-db") && (argIterator.hasNext())) {
+        return argIterator.next();
+      }
+    }
+
+    return null;
+  }
+} 
