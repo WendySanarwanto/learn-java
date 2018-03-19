@@ -15,12 +15,22 @@ public class Contact{
   };
 
   Type type;
+  private int id;
   private String name;
   private String email;
 
   public Contact(String name, String email) {
+    this.id = -2147483648;
     this.name = name;
     this.email = email;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getId() {
+    return this.id;
   }
 
   public void setName(String name) {
