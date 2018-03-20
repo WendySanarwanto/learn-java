@@ -20,7 +20,6 @@ docker cp ./web.xml $TOMCAT_CONTAINER_NAME:$WEB_INF;
 docker exec -it $TOMCAT_CONTAINER_NAME sh -c "./bin/shutdown.sh";
 
 # Restart the Tomcat server
-docker exec -it tomcatdev sh -c "./bin/shutdown.sh";
 docker start $TOMCAT_CONTAINER_NAME;
 
 unset APP_PATH;
