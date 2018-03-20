@@ -7,12 +7,11 @@ import java.util.Optional;
 import java.util.stream.*;
 import me.wendysa.contactsdemo.contracts.*;
 import me.wendysa.contactsdemo.models.*;
-import me.wendysa.contactsdemo.repositories.ScheduleRepository;
 
 public class ScheduleService extends ServiceBase<Schedule> implements ISchedulable {
   public final static String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm";
 
-  public ScheduleService(ScheduleRepository repository) {
+  public ScheduleService(IRepository<Schedule> repository) {
     super(repository);
   }
 
@@ -23,7 +22,7 @@ public class ScheduleService extends ServiceBase<Schedule> implements ISchedulab
     SimpleDateFormat sdf = new SimpleDateFormat(ScheduleService.DATE_TIME_FORMAT);
     Date dateBegin = sdf.parse(beginDate, new ParsePosition(0));
     Date dateEnd = sdf.parse(endDate, new ParsePosition(0));
-    
+
     // System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateBegin: %s", dateBegin));
     // System.out.println(String.format("[DEBUG] - <ScheduleService.doSchedule> dateEnd: %s", dateEnd));
 
@@ -37,9 +36,9 @@ public class ScheduleService extends ServiceBase<Schedule> implements ISchedulab
     List<Schedule> schedules = this.getAll();
 
     if (sortBy == SortBy.START_DATE_ASC) {
-      schedules.sort((left, right) -> (int) left.getBeginDate().getTime() - (int)right.getBeginDate().getTime() );
+      schedules.sort((left, right) -> (int) left.getBeginDate().getTime() - (int) right.getBeginDate().getTime());
     } else {
-      schedules.sort((left, right) -> (int) right.getBeginDate().getTime() - (int)left.getBeginDate().getTime() );
+      schedules.sort((left, right) -> (int) right.getBeginDate().getTime() - (int) left.getBeginDate().getTime());
     }
 
     return schedules;
@@ -50,8 +49,12 @@ public class ScheduleService extends ServiceBase<Schedule> implements ISchedulab
     Contact participant = participant_ != null ? participant_.get() : null;
     List<Schedule> schedules = this.getAll();
 
-    return schedules.stream()
-            .filter(schedule->schedule.getParticipants().indexOf(participant) > -1)
-            .collect(Collectors.toList());
-  }  
+    return schedules.stream().filter(schedule -> schedule.getParticipants().indexOf(participant) > -1)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public void removeAll() {
+    super.removeAll();
+  }
 }

@@ -1,11 +1,9 @@
 package me.wendysa.contactsdemo;
 
 import me.wendysa.contactsdemo.contracts.*;
-import me.wendysa.contactsdemo.models.Contact;
+import me.wendysa.contactsdemo.models.*;
 import me.wendysa.contactsdemo.services.*;
-import me.wendysa.contactsdemo.repositories.ContactMysqlRepository;
-import me.wendysa.contactsdemo.repositories.ContactRepository;
-import me.wendysa.contactsdemo.repositories.ScheduleRepository;
+import me.wendysa.contactsdemo.repositories.*;
 
 public class ServiceFactory {
   public static final String MYSQL_STORAGE_TYPE = "mysql";
@@ -23,7 +21,14 @@ public class ServiceFactory {
   }
 
   // public static ISchedulable getScheduleService(String storageType) {
-  public static ISchedulable getScheduleService() {
-    return new ScheduleService (new ScheduleRepository());
+  public static ISchedulable getScheduleService(String storageType) {
+    IRepository<Schedule> scheduleRepository = null;
+
+    if (MYSQL_STORAGE_TYPE.equals(storageType)) {
+      scheduleRepository = new ScheduleMysqlRepository(JDBC_LOCAL_URL);
+    } else {
+      scheduleRepository = new ScheduleRepository();
+    }
+    return new ScheduleService(scheduleRepository);
   }
 }

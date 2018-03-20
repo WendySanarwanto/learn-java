@@ -9,4 +9,5 @@ public interface ISchedulable {
       String organiser, String title);
   public List<Schedule> getSchedules(Optional<SortBy> sortBy_);
   public List<Schedule> getSchedulesByParticipant(Optional<Contact> participant_);
+  public void removeAll();
 }

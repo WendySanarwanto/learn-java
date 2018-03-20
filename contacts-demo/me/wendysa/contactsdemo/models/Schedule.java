@@ -8,6 +8,7 @@ public class Schedule {
   private Date endDate;
   private List<Contact> participants;
   private String description;
+  private int id;
   private String organiser;
   private String title;
 
@@ -20,6 +21,14 @@ public class Schedule {
     this.description = description;
     this.organiser = organiser;
     this.title = title;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getId() {
+    return this.id;
   }
 
   public Date getBeginDate() {

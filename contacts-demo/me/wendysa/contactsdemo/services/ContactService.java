@@ -10,6 +10,7 @@ public class ContactService extends ServiceBase<Contact> implements IContactBeha
     super(repository);
   }
 
+  @Override
   public Contact createContact(String name, String email, Contact.Type contactType)  {
     Contact newContact = new Contact(name, email);
     newContact.setType(contactType);
@@ -27,5 +28,10 @@ public class ContactService extends ServiceBase<Contact> implements IContactBeha
 
   private void onContactPushed(Contact pushedContact) {
     System.out.println( String.format("\nA new contact has been created :\n------------------------------\n %s", pushedContact.toString()) );
+  }
+
+  @Override
+  public void removeAll() {
+    super.removeAll();
   }
 }

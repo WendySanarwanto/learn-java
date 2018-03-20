@@ -16,7 +16,8 @@ public class ContactMysqlRepository implements IRepository<Contact> {
 
   private final static String INSERT_NEW_CONTACT = "INSERT INTO contact (name, email, `type`) VALUES (?, ?, ?)";
   private final static String SELECT_ALL_CONTACTS = "SELECT id, name, email, `type` FROM `contacts-demo`.contact";
-  
+  private final static String SELECT_CONTACTS_BY_IDS = "SELECT id, name, email, `type` FROM `contacts-demo`.contact where id IN (%s)";
+  private final static String DELETE_ALL_CONTACTS = "DELETE FROM contact";
   private final static String SQLERROR_INSERT_NEW_CONTACT = "Creating a new Contact with { name:%s, email:%s, type: %s } is failing. %s";
 
   public ContactMysqlRepository(String jdbcUrl) {
@@ -26,6 +27,7 @@ public class ContactMysqlRepository implements IRepository<Contact> {
   /**
    * Insert newContact into database via JDBC 
    */
+  @Override
   public Contact push(Contact newContact) {
     try (Connection connection = DriverManager.getConnection(this.jdbcUrl)) {
       // Execute insert query using Prepared Statement
@@ -63,32 +65,70 @@ public class ContactMysqlRepository implements IRepository<Contact> {
     return newContact;
   }
 
+  @Override
   public List<Contact> getAll() {
     List<Contact> results = null;
 
     try (Connection connection = DriverManager.getConnection(this.jdbcUrl)) {
       Statement statement = connection.createStatement();
       try (ResultSet rs = statement.executeQuery(SELECT_ALL_CONTACTS)) {
-        results = new ArrayList<Contact>();
-
-        while(rs.next()){
-          int id = rs.getInt("id");
-          String name = rs.getString("name");
-          String email = rs.getString("email");
-          String stringType = rs.getString(4);
-
-          Contact contact = new Contact(name, email);
-          contact.setId(id);
-          contact.setType(Contact.Type.valueOf(stringType));
-
-          results.add(contact);
-        }
+        results = this.pickResults(rs);
       }
     } catch(SQLException sqlErr) {
       sqlErr.printStackTrace();
       // TODO: Do proper thing against the sqlErr.
     }
 
+    return results;
+  }
+
+  @Override
+  public void deleteAll() {
+    try (Connection connection = DriverManager.getConnection(this.jdbcUrl)) {
+      Statement statement = connection.createStatement();
+      statement.executeUpdate(DELETE_ALL_CONTACTS);
+    } catch(SQLException sqlErr) {
+      sqlErr.printStackTrace();
+      // TODO: Do proper thing against the sqlErr.
+    }
+  }
+
+  public List<Contact> getAllByIds(List<Long> ids) {
+    List<Contact> results = null;
+
+    try (Connection connection = DriverManager.getConnection(this.jdbcUrl)) {
+      Statement statement = connection.createStatement();
+
+      String stringIds = Arrays.toString(ids.toArray(new Long[ids.size()]))
+                          .replace('[', ' ')
+                          .replace(']', ' ');
+      String query = String.format(SELECT_CONTACTS_BY_IDS, stringIds);
+
+      try(ResultSet rs = statement.executeQuery(query)) {
+        results = this.pickResults(rs);
+      }
+    } catch(SQLException sqlErr) {
+      sqlErr.printStackTrace();
+      // TODO: Do proper thing against the sqlErr.
+    }
+
+    return results;
+  }
+
+  private List<Contact> pickResults(ResultSet rs) throws SQLException {
+    List<Contact> results = new ArrayList<Contact>();
+    while(rs.next()){
+      int id = rs.getInt("id");
+      String name = rs.getString("name");
+      String email = rs.getString("email");
+      String stringType = rs.getString(4);
+
+      Contact contact = new Contact(name, email);
+      contact.setId(id);
+      contact.setType(Contact.Type.valueOf(stringType));
+
+      results.add(contact);
+    }
     return results;
   }
 };

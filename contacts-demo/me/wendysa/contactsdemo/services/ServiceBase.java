@@ -18,4 +18,8 @@ public abstract class ServiceBase<TModel> {
   protected TModel push(TModel data) {
     return repository.push(data);
   }
+
+  protected void removeAll() {
+    repository.deleteAll();
+  }
 }

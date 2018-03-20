@@ -91,9 +91,14 @@ public class Main {
     String dbType = Main.getDbTypeArgument(args);
 
     // Note - Generally, we do not instantiate the dependency directly using new. Instead, we usually use DI framework to inject the dependency instance.
-    Main main = new Main(ServiceFactory.getContactService(dbType), ServiceFactory.getScheduleService());
+    Main main = new Main(ServiceFactory.getContactService(dbType), 
+                          ServiceFactory.getScheduleService(dbType));
 
     try {
+      // Clean up all data created in prior runs
+      main.scheduleService.removeAll();
+      main.contactService.removeAll();
+
       // Create new Contact records.
       Contact dianaContact = main.contactService.createContact("Diana Prince", "diana.prince@gmail.com",
           Contact.Type.FRIEND);
