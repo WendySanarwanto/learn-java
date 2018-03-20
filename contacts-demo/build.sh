@@ -2,7 +2,7 @@
 ./clean.sh && \
 
 # Build the application's .java files with its dependencies.
-find . -name "*.java" -print | xargs javac -cp ".;../dependencies/**.jar"  -d ./dist && \
+find . -name "*.java" -print | xargs javac -cp ".;./dependencies/*"  -d ./dist && \
 
 # Cleanup .class files within source directory
 rm -rf ./me/wendysa/contactsdemo/**/*.class ./me/wendysa/contactsdemo/*.class
