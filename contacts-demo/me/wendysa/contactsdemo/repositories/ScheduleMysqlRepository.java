@@ -1,12 +1,6 @@
 package me.wendysa.contactsdemo.repositories;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLDataException;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +29,12 @@ public class ScheduleMysqlRepository implements IRepository<Schedule> {
   @Override
   public Schedule push(Schedule newSchedule) {
     try (Connection connection = DriverManager.getConnection(this.jdbcUrl)) {
+      // Begin Transaction
+      connection.setAutoCommit(false);
+
+      // Create initial save point
+      Savepoint initialSavePoint = connection.setSavepoint();
+
       // Execute insert query using Prepared Statement
       PreparedStatement statement = connection.prepareStatement(INSERT_NEW_SCHEDULE, Statement.RETURN_GENERATED_KEYS);
 
@@ -69,7 +69,9 @@ public class ScheduleMysqlRepository implements IRepository<Schedule> {
 
       // Insert Schedule-Contacts (Participants)
       List<Contact> participants = newSchedule.getParticipants();
-      this.createParticipants(newSchedule.getId(), participants, BATCH_SIZE, connection);
+      this.createParticipants(newSchedule.getId(), participants, BATCH_SIZE, initialSavePoint, connection);
+
+      connection.commit();
 
     } catch(SQLException sqlErr) {
       sqlErr.printStackTrace();
@@ -144,7 +146,8 @@ public class ScheduleMysqlRepository implements IRepository<Schedule> {
     return participants;
   }
 
-  private void createParticipants(int scheduleId, List<Contact> contacts, int batchSize, Connection connection) throws SQLException {
+  private void createParticipants(int scheduleId, List<Contact> contacts, int batchSize, 
+                                  Savepoint savePoint, Connection connection) throws SQLException {
     // Instantiate Contacts repository
     try (PreparedStatement statement = connection.prepareStatement(INSERT_NEW_SCHEDULE_CONTACT)) {
       int recordCount = 0;
@@ -160,7 +163,11 @@ public class ScheduleMysqlRepository implements IRepository<Schedule> {
 
       // Insert remaining records
       statement.executeBatch();
-    } 
+    } catch(SQLException sqlErr) {
+      // Rollback 
+      connection.rollback(savePoint);
+      throw sqlErr;
+    }
   }
 
   private void onAllSchedulesDeleted(Connection connection) throws SQLException {
