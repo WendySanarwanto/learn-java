@@ -13,8 +13,9 @@ public class Main extends HttpServlet{
       "<body bgcolor = \"#f0f0f0\">\n" +
         "<h1 align=\"center\">%s</h1>\n" +
         "<ul>\n" +
-          "<li><b>Name </b>: %s</li>" +
+          "<li><b>Name&nbsp;</b>: %s</li>" +
           "<li><b>Email</b>: %s</li>" +
+          "<li><b>Type&nbsp;</b>: %s</li>" +
         "</ul>\n" +
         "<p>" +          
           "<a href=\"ContactEntry.html\">"  +
@@ -37,8 +38,10 @@ public class Main extends HttpServlet{
       name = name == null ? "-" : name;
       String email = request.getParameter("email");
       email = email == null ? "-" : email;
+      String type = request.getParameter("type");
+      type = type == null ? "-" : type;
 
-      String html = String.format(SUBMITTED_CONTACT_VIEW, title, title, name, email );
+      String html = String.format(SUBMITTED_CONTACT_VIEW, title, title, name, email, type );
       out.println(html);
   }
 
