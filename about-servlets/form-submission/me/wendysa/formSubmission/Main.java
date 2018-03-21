@@ -31,17 +31,17 @@ public class Main extends HttpServlet{
       // Set response content type
       response.setContentType("text/html");
 
-      // The logic goes here
+      // Get submitted values and prepare page to display these values.
       String title = "Submitted Contact";
-      PrintWriter out = response.getWriter();
       String name = request.getParameter("name");
       name = name == null ? "-" : name;
       String email = request.getParameter("email");
       email = email == null ? "-" : email;
       String type = request.getParameter("type");
       type = type == null ? "-" : type;
-
       String html = String.format(SUBMITTED_CONTACT_VIEW, title, title, name, email, type );
+
+      PrintWriter out = response.getWriter();      
       out.println(html);
   }
 
