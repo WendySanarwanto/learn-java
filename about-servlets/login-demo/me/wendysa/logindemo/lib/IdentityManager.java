@@ -50,10 +50,15 @@ public class IdentityManager {
       // If 1st random number is 1, random a number within range alphabets.length
       if (randomNumber == 1) {
         int alphaIndex = random.nextInt(alphabets.length()) - 1;
+        if (alphaIndex <= 1) {
+          alphaIndex = 0;
+        }
         stringBuffer.append(alphabets.charAt(alphaIndex));
       } else {
-        int numericIndex = random.nextInt(numerics.length()) - 1;
-        System.out.println(String.format("numericIndex = %s", numericIndex));
+        int numericIndex = random.nextInt(numerics.length());
+        if (numericIndex <= 1) {
+          numericIndex = 0;
+        }
         stringBuffer.append(numerics.charAt(numericIndex));
       }
     }
