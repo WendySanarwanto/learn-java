@@ -42,7 +42,6 @@ public class Landing extends HttpServlet{
       "</body>" +
     "</html>\n";
 
-  private static final int COOKIE_MAX_AGE = 1800; // 30 minutes
 
   @Override 
   public void init() {
@@ -76,33 +75,6 @@ public class Landing extends HttpServlet{
       }
   }
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-      String userId = request.getParameter(USER_ID_KEY);
-      userId = userId == null ? "" : userId;
-      String password = request.getParameter("password");
-      password = password == null ? "" : password;
-      
-      // Authenticate submitted userId & password
-      if (!Landing.identityManager.doAuthenticate(userId, password)) {
-        // Should the login is failing , redirect back to Login. 
-        response.sendRedirect("Login");
-        return;
-      } 
-      
-      // Should the login is success, create a random string 
-      //       then put both userId and random string into a Cookie. 
-      //       ensure that the cookie is expired in a minute
-      String authToken = Landing.identityManager.getAuthToken(userId);
-
-      CookieService cookieService = new CookieService(response); 
-      cookieService.keepValueKeyPair(authToken, userId, COOKIE_MAX_AGE);
-
-      // When the login is success, redirect to the Landing servlet with query parameter equal to the random string
-      // doGet(request, response);
-      response.sendRedirect("Landing?userId="+userId);
-  }
 
   @Override
   public void destroy() {
