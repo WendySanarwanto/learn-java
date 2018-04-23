@@ -53,50 +53,32 @@ public class Landing extends HttpServlet{
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
-      // Set response content type
-      response.setContentType("text/html");
+    // Set response content type
+    response.setContentType("text/html");
 
-      // Inspect the cookie, specified by userid
-      CookieService cookieService = new CookieService(response); 
-      Cookie[] cookies = request.getCookies();
-      String userId = request.getParameter(USER_ID_KEY);
-      Cookie cookie = cookieService.getCookieByKey(userId, cookies);
+    // Inspect the session, specified by userId
+    HttpSession session = request.getSession(true);
+    String userId = (String) session.getAttribute(USER_ID_KEY);
 
-      // If the userId is not specified on parameter, just pick 1st cookie
-      if ((cookie == null) && (cookies != null) && (cookies.length > 0)) {
-        cookie = cookies[0];
-      }
-      
-      // Do we have a valid cookie ?
-      PrintWriter out = response.getWriter();
-      if (isCookieValid(cookie)) {
-        userId = cookie.getName();
-        String html = String.format(LANDING_VIEW_AUTHENTICATED, userId, userId);
-        // Render landing page for Authenticated visitor
-        out.println(html);
-      } else {
-        // Render landing page for unauthenticated visitor
-        out.println(LANDING_VIEW_VISITOR);
-      }
+    // Do we have valid authToken
+    String authToken = null;
+    if ( (userId != null) && (userId != "") ) {
+      authToken = (String) session.getAttribute(userId);
+    }
+
+    PrintWriter out = response.getWriter();
+    if ( (authToken == null) || (authToken.trim().equals("") )) {
+      // Render landing page for unauthenticated visitor
+      out.println(LANDING_VIEW_VISITOR);
+    } else {
+      String html = String.format(LANDING_VIEW_AUTHENTICATED, userId, userId);
+      // Render landing page for Authenticated visitor
+      out.println(html);        
+    }
   }
-
 
   @Override
   public void destroy() {
     // TODO: Cleanup temporary storages
-  }
-
-  /**
-   * A helper to check the authToken inside cookie, whether it's still valid or not.
-   */
-  boolean isCookieValid(Cookie cookie) {
-    if (cookie == null) {
-      return false;
-    }
-
-    String authTokenFromCookie = cookie.getValue();
-    String userId = cookie.getName();
-    String authToken = Landing.identityManager.getAuthToken(userId);
-    return authToken != null ? authToken.equals(authTokenFromCookie) : false;
   }
 }

@@ -1,5 +1,6 @@
 package me.wendysa.logindemo;
 
+import java.util.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -11,20 +12,21 @@ public class Logout extends HttpServlet{
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
-    // Get cookies
-    CookieService cookieService = new CookieService(response); 
-    Cookie[] cookies = request.getCookies();
+    HttpSession session = request.getSession(true);
+    session.invalidate();
 
-    if ( (cookies != null) && (cookies.length > 0) ) {
-      for(Cookie cookie: cookies){
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
-        // Remove from AuthToken Storage
-        String cookieName = cookie.getName();
-        Landing.identityManager.removeAuthToken(cookieName);
-      }
-    }
+    // Cookie[] cookies = request.getCookies();
+    // if ( (cookies != null) && (cookies.length > 0)) {
+    //   Cookie jsessionIdCookie = 
+    //     Arrays.stream(cookies)
+    //       .filter(_cookie -> _cookie.getName().equals("JSESSIONID"))
+    //       .findFirst()
+    //       .orElse(null);
+    //   if (jsessionIdCookie != null) {
+    //     jsessionIdCookie.setMaxAge(0);
+    //     response.addCookie(jsessionIdCookie);
+    //   }
+    // }
 
     // Redirect to landing page
     response.sendRedirect("Landing");

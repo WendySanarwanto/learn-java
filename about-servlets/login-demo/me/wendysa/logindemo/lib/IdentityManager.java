@@ -5,7 +5,6 @@ import java.util.*;
 public class IdentityManager {
   // NOTE - Ideally, these storage sit on Database tables , mediated by repository classes.
   private final HashMap<String, String> accounts = new HashMap<String, String>();
-  private final HashMap<String, String> authTokens = new HashMap<String, String>();
   
   public void createAccount(String userId, String password) {
     this.accounts.put(userId, password);
@@ -14,31 +13,11 @@ public class IdentityManager {
   /**
    * A helper method to match entered user id and password against the stored accounts data.
    */
-  public boolean doAuthenticate(String userId, String password) {
+  public String doAuthenticate(String userId, String password) {
     String passwordInRepo = this.accounts.get(userId);
     boolean isAuthenticated = password.equals(passwordInRepo);
 
-    if (isAuthenticated) {
-      String authToken = createRandomString();
-      // Keep auth token on server side's data store
-      this.authTokens.put(userId, authToken); 
-    }
-
-    return isAuthenticated;
-  }
-
-  /**
-   * Get auth token by user ID.
-   */
-  public String getAuthToken(String userId) {
-    return this.authTokens.get(userId);
-  }
-
-  /**
-   * Remove auth token specified by userId
-   */
-  public void removeAuthToken(String userId) {
-    this.authTokens.remove(userId);
+    return isAuthenticated ? createRandomString() : null;
   }
 
   /**
