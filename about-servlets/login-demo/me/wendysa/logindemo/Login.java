@@ -84,6 +84,7 @@ public class Login extends HttpServlet {
 
       // When the login is success, redirect to the Landing servlet with query parameter equal to the random string
       // doGet(request, response);
-      response.sendRedirect("Landing?userId="+userId);
+      // response.sendRedirect("Landing?userId="+userId);
+      response.sendRedirect("Landing");
   }  
 }

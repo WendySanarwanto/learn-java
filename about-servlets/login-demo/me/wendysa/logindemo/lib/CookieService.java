@@ -24,7 +24,7 @@ public class CookieService{
    * A helper to get cookie in cookies list by specified email.
    */
   public Cookie getCookieByKey(String key, Cookie[] cookies){
-    // Return null if email or cookies are null or empty
+    // Return null if key or cookies are null or empty
     if ( (key == null) || (key.equals("")) || 
          (cookies == null) || (cookies.length == 0)) {
       return null;

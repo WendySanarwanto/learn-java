@@ -61,6 +61,11 @@ public class Landing extends HttpServlet{
       Cookie[] cookies = request.getCookies();
       String userId = request.getParameter(USER_ID_KEY);
       Cookie cookie = cookieService.getCookieByKey(userId, cookies);
+
+      // If the userId is not specified on parameter, just pick 1st cookie
+      if ((cookie == null) && (cookies != null) && (cookies.length > 0)) {
+        cookie = cookies[0];
+      }
       
       // Do we have a valid cookie ?
       PrintWriter out = response.getWriter();
@@ -89,8 +94,9 @@ public class Landing extends HttpServlet{
       return false;
     }
 
-    String authToken = cookie.getValue();
+    String authTokenFromCookie = cookie.getValue();
     String userId = cookie.getName();
-    return Landing.identityManager.getAuthToken(userId).equals(authToken);
+    String authToken = Landing.identityManager.getAuthToken(userId);
+    return authToken != null ? authToken.equals(authTokenFromCookie) : false;
   }
 }
