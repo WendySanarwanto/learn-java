@@ -18,8 +18,8 @@ if [ -d "./dist" ]; then
   # Copy .class files inside dist into $TOMCAT_CONTAINER_NAME:$TARGET_DIR directory  
   docker cp ./dist/. $TOMCAT_CONTAINER_NAME:$TARGET_DIR;
 
-  # Copy *.html files inside dist into $TOMCAT_CONTAINER_NAME:TARGET_ROOT_DIR
-  docker cp ./dist/*.html $TOMCAT_CONTAINER_NAME:$TARGET_ROOT_DIR;
+  # # Copy *.html files inside dist into $TOMCAT_CONTAINER_NAME:TARGET_ROOT_DIR
+  # docker cp ./dist/*.html $TOMCAT_CONTAINER_NAME:$TARGET_ROOT_DIR;
 fi
 
 # Copy web.xml file into $TOMCAT_CONTAINER_NAME:$WEB_INF directory

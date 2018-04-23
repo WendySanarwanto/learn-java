@@ -38,6 +38,16 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>me.wendysa.logindemo.Login</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/Login</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>Logout</servlet-name>
     <servlet-class>me.wendysa.logindemo.Logout</servlet-class>
   </servlet>

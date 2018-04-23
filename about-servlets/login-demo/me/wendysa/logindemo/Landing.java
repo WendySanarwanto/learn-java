@@ -1,9 +1,6 @@
 package me.wendysa.logindemo;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -22,7 +19,7 @@ public class Landing extends HttpServlet{
         "<hr/>\n" +
         "<p>Please login using valid user id and correct password, if you have registered on our site.</p>\n" +
         "<p>" +
-          "<a href=\"/Login.html\">"  +
+          "<a href=\"/Login\">"  +
             "<span>Login</span>"  +
           "</a>" +
         "</p>" +
@@ -89,8 +86,8 @@ public class Landing extends HttpServlet{
       
       // Authenticate submitted userId & password
       if (!Landing.identityManager.doAuthenticate(userId, password)) {
-        // Should the login is failing , redirect back to Login.html. 
-        response.sendRedirect("Login.html");
+        // Should the login is failing , redirect back to Login. 
+        response.sendRedirect("Login");
         return;
       } 
       
