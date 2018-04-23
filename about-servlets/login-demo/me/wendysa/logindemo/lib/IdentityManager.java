@@ -35,6 +35,13 @@ public class IdentityManager {
   }
 
   /**
+   * Remove auth token specified by userId
+   */
+  public void removeAuthToken(String userId) {
+    this.authTokens.remove(userId);
+  }
+
+  /**
    * A helper method to create a random string
    */
   private String createRandomString() {

@@ -37,4 +37,14 @@
     <url-pattern>/Landing</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>me.wendysa.logindemo.Logout</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/Logout</url-pattern>
+  </servlet-mapping>
+
 </web-app>

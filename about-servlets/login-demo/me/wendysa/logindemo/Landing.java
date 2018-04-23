@@ -11,7 +11,7 @@ import javax.servlet.http.*;
 import me.wendysa.logindemo.lib.*;
 
 public class Landing extends HttpServlet{
-  private static final IdentityManager identityManager = new IdentityManager();
+  public static final IdentityManager identityManager = new IdentityManager();
   private static final String USER_ID_KEY = "userId";
   private static final String LANDING_VIEW_VISITOR = 
     "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n" + 
@@ -45,7 +45,7 @@ public class Landing extends HttpServlet{
       "</body>" +
     "</html>\n";
 
-  private static final int COOKIE_MAX_AGE = 60; // Sixty seconds
+  private static final int COOKIE_MAX_AGE = 1800; // 30 minutes
 
   @Override 
   public void init() {
