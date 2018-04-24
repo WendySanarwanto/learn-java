@@ -9,7 +9,6 @@ import javax.servlet.http.*;
 import me.wendysa.logindemo.lib.*;
 
 public class Login extends HttpServlet {
-  private boolean shouldRedirectToLanding = false;
   private static final String USER_ID_KEY = "userId";
   private static final int COOKIE_MAX_AGE = 1800; // 30 minutes  
   private static final String DEFAULT_VIEW = 
@@ -33,14 +32,6 @@ public class Login extends HttpServlet {
       "</body>" +
     "</html>\n";
 
-  @Override 
-  public void init() {
-    // Initialise accounts data
-    if (Landing.identityManager == null) {
-      shouldRedirectToLanding = true;
-    }
-  }
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
@@ -48,8 +39,14 @@ public class Login extends HttpServlet {
     // Set response content type
     response.setContentType("text/html");
 
-    // Redirect to Landing if identityManager has not been created
-    if (shouldRedirectToLanding) {
+    // Do we have valid authToken ? if yes redirect to landing page.
+    HttpSession session = request.getSession(true);
+    String userId = (String) session.getAttribute(USER_ID_KEY);
+    String authToken = null;
+    if ( (userId != null) && (userId != "") ) {
+      authToken = (String) session.getAttribute(userId);
+    }
+    if ( (authToken != null) && (!authToken.trim().equals("") )) {
       response.sendRedirect("Landing");
       return;
     }
@@ -68,19 +65,17 @@ public class Login extends HttpServlet {
       password = password == null ? "" : password;
       
       // Authenticate submitted userId & password
-      if (!Landing.identityManager.doAuthenticate(userId, password)) {
+      String authToken = Landing.identityManager.doAuthenticate(userId, password);
+      if (authToken == null) {
         // Should the login is failing , redirect back to Login. 
         response.sendRedirect("Login");
         return;
       } 
       
-      // Should the login is success, create a random string 
-      //       then put both userId and random string into a Cookie. 
-      //       ensure that the cookie is expired in a minute
-      String authToken = Landing.identityManager.getAuthToken(userId);
-
-      CookieService cookieService = new CookieService(response); 
-      cookieService.keepValueKeyPair(authToken, userId, COOKIE_MAX_AGE);
+      HttpSession session = request.getSession(true);
+      session.setMaxInactiveInterval(COOKIE_MAX_AGE);
+      session.setAttribute(USER_ID_KEY, userId);
+      session.setAttribute(userId, authToken);
 
       // When the login is success, redirect to the Landing servlet with query parameter equal to the random string
       // doGet(request, response);
