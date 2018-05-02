@@ -17,6 +17,9 @@ if [ -d "./dist" ]; then
 
   # Copy JSTL dependencies  
   for f in ../../libs/jstl/*.jar; do docker cp $f $TOMCAT_CONTAINER_NAME:$WEB_INF/lib/; done;
+
+  # Copy MySQL Dependencies
+  for f in ../../libs/mysql/*.jar; do docker cp $f $TOMCAT_CONTAINER_NAME:$WEB_INF/lib; done;
 fi
 
 # Shutdown the Tomcat server
