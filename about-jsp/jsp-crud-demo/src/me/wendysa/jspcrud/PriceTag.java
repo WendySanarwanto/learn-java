@@ -3,7 +3,10 @@ package me.wendysa.jspcrud;
 import javax.servlet.jsp.tagext.*;
 import javax.servlet.jsp.*;
 import java.io.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+
+import me.wendysa.jspcrud.models.*;
+import me.wendysa.jspcrud.services.*;
 
 public class PriceTag extends SimpleTagSupport {
   public void doTag() throws JspException, IOException {
@@ -13,9 +16,10 @@ public class PriceTag extends SimpleTagSupport {
     getJspBody().invoke(stringWriter);
     String content = stringWriter.toString();
 
-    // Parse the content into POJO instance
-    ObjectMapper mapper = new ObjectMapper();    
-    Price price = mapper.readValue(content, Price.class);
+    // // Parse the content into POJO instance
+    // ObjectMapper mapper = new ObjectMapper(); 
+    // Price price = mapper.readValue(content, Price.class);
+    Price price = JsonUtilService.doParse(content, Price.class);
 
     // Output the POJO Instance
     JspWriter out = getJspContext().getOut();

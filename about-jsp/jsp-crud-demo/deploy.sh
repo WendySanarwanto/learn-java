@@ -39,6 +39,9 @@ if [ -d "./dist" ]; then
   docker cp ./dist/jsp-crud.tld $TOMCAT_CONTAINER_NAME:$WEB_INF;
 fi
 
+# Copy web.xml file into $TOMCAT_CONTAINER_NAME:$WEB_INF directory
+docker cp ./web.xml $TOMCAT_CONTAINER_NAME:$WEB_INF;
+
 # Shutdown the Tomcat server
 docker exec -it $TOMCAT_CONTAINER_NAME sh -c "./bin/shutdown.sh";
 

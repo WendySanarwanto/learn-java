@@ -27,16 +27,17 @@
      JSP CRUD Demo
   </description>
 
-  <!-- <servlet>
-    <servlet-name>Landing</servlet-name>
-    <servlet-class>me.wendysa.logindemo.Landing</servlet-class>
+  <servlet>
+    <servlet-name>ProductServlet</servlet-name>
+    <servlet-class>me.wendysa.jspcrud.ProductServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>Landing</servlet-name>
-    <url-pattern>/Landing</url-pattern>
+    <servlet-name>ProductServlet</servlet-name>
+    <url-pattern>/ProductServlet</url-pattern>
   </servlet-mapping>
 
+  <!--
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>me.wendysa.logindemo.Login</servlet-class>
