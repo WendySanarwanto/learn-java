@@ -28,7 +28,8 @@
         </div>
         <div class="field">
           <label>Description</label>
-          <input id="input-description" type="text" name="description" placeholder="Description">
+          <%-- <input id="input-description" type="text" name="description" placeholder="Description"> --%>
+          <textarea id="input-description" name="description" rows="4" cols="50"></textarea>
         </div>
         <div class="field">
           <label>Price</label>
