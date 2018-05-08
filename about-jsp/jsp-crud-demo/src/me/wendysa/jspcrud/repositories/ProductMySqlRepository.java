@@ -12,8 +12,10 @@ public class ProductMySqlRepository {
   private final String jdbcUrl;
 
   private final static String INSERT_NEW_PRODUCT = "INSERT INTO estore.products (name, description, price ) VALUES (?, ?, ?)";
+  private final static String DELETE_PRODUCT = "DELETE FROM estore.products WHERE id=?";
 
   private final static String SQLERROR_INSERT_NEW_PRODUCT = "Creating a new Product is failing. %s";
+  private final static String SQLERROR_DELETE_PRODUCT = "Delete a Product is failing. %s";
 
   public ProductMySqlRepository(String jdbcUrl) {
     this.jdbcUrl = jdbcUrl;
@@ -64,5 +66,23 @@ public class ProductMySqlRepository {
     } 
 
     return newProduct;
+  }
+
+  public void remove(int id) 
+    throws SQLException{
+    try (Connection connection = DriverManager.getConnection(this.jdbcUrl)){
+      
+      // Create delete statement 
+      PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT, Statement.RETURN_GENERATED_KEYS);
+
+      // execute the delete statement
+      statement.setInt(1, id);
+      int affectedRow = statement.executeUpdate();
+
+      // Throw exception if no row was inserted
+      if (affectedRow == 0) {
+        throw new SQLException(String.format(SQLERROR_INSERT_NEW_PRODUCT, "No rows affected."));
+      }
+    } 
   }
 }

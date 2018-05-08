@@ -13,30 +13,45 @@ public class ProductServlet extends HttpServlet {
   private static final String JDBC_LOCAL_URL = "jdbc:mysql://172.17.0.3:3306/estore?user=root&password=test123&useSSL=false";
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) 
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
-    // Get action parameter
-    String action = request.getParameter("action");
-    if (action == null) {
-      // Redirect to main.jsp
-      response.sendRedirect("main.jsp");
-      return;
-    }
-
-    // TODO: Do action specified by action parameter
     try { 
-      switch(action) {
-        case "INSERT": 
-          insertNewRecord(request);
-          response.sendRedirect("main.jsp");          
-          break;
-        default:
-      }
+      insertNewRecord(request);
+      response.sendRedirect("main.jsp");
     } catch(SQLException | IOException err) {
       getServletContext().log("An exception occured", err);
     }
   }
 
+  @Override
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
+    throws ServletException, IOException {
+    try{
+      deleteRecord(request);
+      // response.sendRedirect("main.jsp");
+    } catch(SQLException | IOException err) {
+      getServletContext().log("An exception occured", err);
+    }
+  }
+  
+  /**
+   * A helper for deleting a record.
+   */
+  private void deleteRecord(HttpServletRequest request) 
+    throws SQLException, IOException {
+      String rawId = request.getParameter("id");
+      int id = rawId != null ? Integer.parseInt(rawId) : -1;
+      if (id == -1) {
+        return;
+      }
+
+      ProductMySqlRepository productRepo = new ProductMySqlRepository(JDBC_LOCAL_URL);
+      productRepo.remove(id);
+  }
+
+  /**
+   * A helper for inserting a new record into database
+   */
   private Product insertNewRecord(HttpServletRequest request)
     throws SQLException, IOException {
     String name = request.getParameter("name");

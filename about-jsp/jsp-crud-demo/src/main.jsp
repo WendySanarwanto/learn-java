@@ -21,7 +21,7 @@
 
     <div id="formInsertContainer" style="display:none">
       <form id="formInsertProduct" class="ui form" 
-        action="/ProductServlet?action=INSERT" method="post">
+        action="/ProductServlet" method="post">
         <div class="field">
           <label>Product Name</label>
           <input type="text" name="name" placeholder="Product Name">
@@ -47,6 +47,7 @@
         <th>Product Name</th>
         <th>Price</th>
         <th>Description</th>
+        <th>Actions</th>
       </tr>
       
       <c:forEach var="row" items="${result.rows}">
@@ -58,6 +59,12 @@
           <crud:Price>${row.price}</crud:Price>
         </td>
         <td><c:out value="${row.description}"/></td>
+        <td>
+          <button id="btnDelete" class="ui button" type="button" 
+              onclick="onDeleteItemClicked(${row.id})">
+              Delete
+          </button>
+        </td>
       </tr>
       </c:forEach>
     </table>
@@ -79,6 +86,22 @@
         label === 'Insert' ? label = 'Cancel' : label = 'Insert';
         buttonInsert.innerHTML = label;
       }
+    }
+
+    function onDeleteItemClicked(id) {
+      const xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        const readyState = this.readyState;
+        const status = this.status;
+        if (readyState ===4) {
+          if (status === 200) {
+            window.location = "/main.jsp";
+          }
+        }
+        // console.log(`[DEBUG] - <main.jsp.onDeleteItemClicked.onreadystatechange> readyState: `+readyState+`, status: `, status);
+      };
+      xhttp.open("DELETE", "/ProductServlet?id="+id, true);
+      xhttp.send(null);
     }
   </script>
 </html>
