@@ -21,7 +21,7 @@
 
     <div id="formInsertContainer" style="display:none">
       <form id="formInsertProduct" class="ui form" 
-        action="/ProductServlet" method="post">
+        action="/ProductServlet">
         <div class="field">
           <label>Product Name</label>
           <input type="text" name="name" placeholder="Product Name">
@@ -77,8 +77,13 @@
 
       if (formInsertContainer) {
         let display = formInsertContainer.style.display;
-        display === 'none' ? display = 'block' : display = 'none';
-        formInsertContainer.style.display = display;
+        formInsertContainer.style.display = display === 'none' ? 'block' : 'none';
+        display = formInsertContainer.style.display;
+
+        const formInsertProduct = document.getElementById("formInsertProduct");
+        if (formInsertProduct) {
+          formInsertProduct.method = display === 'block' ? 'post' : undefined;
+        }
       }
 
       if (buttonInsert) {
