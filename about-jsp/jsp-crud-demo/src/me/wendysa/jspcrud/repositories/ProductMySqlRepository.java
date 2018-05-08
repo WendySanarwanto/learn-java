@@ -13,9 +13,11 @@ public class ProductMySqlRepository {
 
   private final static String INSERT_NEW_PRODUCT = "INSERT INTO estore.products (name, description, price ) VALUES (?, ?, ?)";
   private final static String DELETE_PRODUCT = "DELETE FROM estore.products WHERE id=?";
+  private final static String UPDATE_PRODUCT = "UPDATE estore.products SET name=?, description=?, price=? WHERE id=?";
 
   private final static String SQLERROR_INSERT_NEW_PRODUCT = "Creating a new Product is failing. %s";
   private final static String SQLERROR_DELETE_PRODUCT = "Delete a Product is failing. %s";
+  private final static String SQLERROR_UPDATE_PRODUCT = "Updating a Product is failing. %s";
 
   public ProductMySqlRepository(String jdbcUrl) {
     this.jdbcUrl = jdbcUrl;
@@ -27,12 +29,6 @@ public class ProductMySqlRepository {
   public Product push(Product newProduct) 
     throws SQLException, IOException {
     try (Connection connection = DriverManager.getConnection(this.jdbcUrl)){
-      // Begin Transaction
-      connection.setAutoCommit(false);
-      
-      // Create initial save point
-      Savepoint initialSavePoint = connection.setSavepoint();
-
       String name = newProduct.getName();
       String description = newProduct.getDescription();
       Price price = newProduct.getPrice();
@@ -61,15 +57,12 @@ public class ProductMySqlRepository {
           throw new SQLException(String.format(SQLERROR_INSERT_NEW_PRODUCT, "No ID obtained."));
         }
       }
-
-      connection.commit();
     } 
 
     return newProduct;
   }
 
-  public void remove(int id) 
-    throws SQLException{
+  public void remove(int id) throws SQLException {
     try (Connection connection = DriverManager.getConnection(this.jdbcUrl)){
       
       // Create delete statement 
@@ -81,8 +74,36 @@ public class ProductMySqlRepository {
 
       // Throw exception if no row was inserted
       if (affectedRow == 0) {
-        throw new SQLException(String.format(SQLERROR_INSERT_NEW_PRODUCT, "No rows affected."));
+        throw new SQLException(String.format(SQLERROR_DELETE_PRODUCT, "No rows affected."));
       }
     } 
+  }
+
+  public Product update(Product changedProduct) throws SQLException, IOException {
+    try (Connection connection = DriverManager.getConnection(this.jdbcUrl)){
+      String name = changedProduct.getName();
+      String description = changedProduct.getDescription();
+      Price price = changedProduct.getPrice();
+      int id = changedProduct.getId();
+
+      // Create update statement
+      PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT);
+      
+      // Load changed values
+      statement.setString(1, name);
+      statement.setString(2, description);
+      String stringifiedJsonPrice = JsonUtilService.jsonStringify(price);
+      statement.setString(3, stringifiedJsonPrice);
+      statement.setInt(4, id);
+
+      int affectedRow = statement.executeUpdate();
+
+      // Throw exception if no row was inserted
+      if (affectedRow == 0) {
+        throw new SQLException(String.format(SQLERROR_INSERT_NEW_PRODUCT, "No rows affected."));
+      }
+      
+      return changedProduct;
+    }
   }
 }
