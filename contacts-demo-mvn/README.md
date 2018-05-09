@@ -14,6 +14,8 @@ This is a simple command line program written by using Java programming language
 
 4. Invoke `mvn clean package` command. 
 
+5. Invoke `mvn exec:java` command.
+
 ## How to run the demo using Mysql Database server.
 
 1. Ensure that you have installed [DockerCE](https://www.docker.com/community-edition#/download) in your machine.
@@ -30,4 +32,4 @@ This is a simple command line program written by using Java programming language
 
 7. Restore the required database through executing `ddl.sql` script in a MySQL client tool.
 
-8. Invoke `mvn exec:java` command to run the demo app.
+8. Invoke `mvn exec:java -Dexec.args="-db:mysql"` command to run the demo app.

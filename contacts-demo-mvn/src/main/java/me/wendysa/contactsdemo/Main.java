@@ -145,6 +145,9 @@ public class Main {
       System.out.println(String.format("[ERROR] - Details: %s. Stacktrace: \n", err));
       err.printStackTrace();
     }
+
+    System.out.println("[DEBUG] - <Main.main> args: "+ Arrays.toString(args));
+    System.out.println("[DEBUG] - <Main.main> dbType: "+ dbType);
   }
 
   /**
@@ -154,9 +157,9 @@ public class Main {
     Iterator<String> argIterator = Arrays.asList(args).iterator();
     while(argIterator.hasNext()) {
       String arg = argIterator.next();
-      if (arg.equals("-db") && (argIterator.hasNext())) {
-        return argIterator.next();
-      }
+      String db = arg != null && arg.contains("-db=") ? arg.split("=")[1] : null; 
+      db = db == null && arg.contains("-db:") ? arg.split(":")[1] : db;
+      if (db != null) return db;
     }
 
     return null;
