@@ -18,4 +18,4 @@ A simple web application which performs Login and showing landing page for the a
 
 7. Run `build_deploy.sh` command.
 
-8. Browser the landing page on http://localhost:4040/Landing. Click the `Login` link on the page , to do login into the application. Once you have logged in, you should see different welcome heading text on the Landing page. Click `Logout` link on the Landing page to perform logout.
+8. Browser the landing page on http://localhost:4040/Landing. Click the `Login` link on the page , to do login into the application. Once you have logged in, you should see different welcome heading text on the Landing page. Do login using username: `wendy_s` and password: `test123`. Click `Logout` link on the Landing page to perform logout.
