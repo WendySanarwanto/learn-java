@@ -1,6 +1,6 @@
-# hello-servlet-mvn
+# form-submission-mvn
 
-A simple Java servlet which just prints __Hello Servlet__ big header on a web page, and managed by Maven.
+A simple Java servlet which just renders a page that displays `name` and `email` values that were submitted from a HTML form file, managed by Maven.
 
 ## How to run the servlet
 
@@ -16,10 +16,10 @@ A simple Java servlet which just prints __Hello Servlet__ big header on a web pa
 
 6. Clone the parent repository of this project.
 
-7. Change directory to `about-servlets/hello-servlet-mvn` sub directory.
+7. Change directory to `about-servlets/form-submission-mvn` sub directory.
 
 8. Run `mvn clean package` command.
 
 9. Run `./deploy.sh` command.
 
-10. Browse the servlet on http://localhost:4040/hello-servlet-1.0/hello.
+10. Browse the submission form on http://localhost:4040/form-submission-1.0/index.html . Upon submitting the form, the browser will redirect to the servlet on http://localhost:4040/form-submission-1.0/ContactEntry .
