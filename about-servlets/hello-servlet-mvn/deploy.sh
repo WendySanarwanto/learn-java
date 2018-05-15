@@ -8,13 +8,13 @@ export WAR_FILENAME=$WAR_NAME.war
 echo "[INFO] - Deploying '$WAR_FILENAME' into '$TOMCAT_CONTAINER_NAME' container...";
 
 # Remove older .war file
-docker exec -it $TOMCAT_CONTAINER_NAME sh -c "rm -rf $TARGET_DIR/$WAR_NAME*";
+docker exec $TOMCAT_CONTAINER_NAME sh -c "rm -rf $TARGET_DIR/$WAR_NAME*";
 
 # Copy target/hello-servlet- into $TOMCAT_CONTAINER_NAME:$TARGET_DIR directory
 docker cp ./target/$WAR_FILENAME $TOMCAT_CONTAINER_NAME:$TARGET_DIR;
 
 # Shutdown the Tomcat server
-docker exec -it $TOMCAT_CONTAINER_NAME sh -c "./bin/shutdown.sh";
+docker exec $TOMCAT_CONTAINER_NAME sh -c "./bin/shutdown.sh";
 
 # Restart the Tomcat server
 docker start $TOMCAT_CONTAINER_NAME;

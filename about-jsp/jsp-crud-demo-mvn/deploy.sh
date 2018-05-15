@@ -1,8 +1,8 @@
 export CATALINA_HOME=/usr/local/tomcat;
 export TARGET_DIR=$CATALINA_HOME/webapps;
 export TOMCAT_CONTAINER_NAME=tomcatdev;
-export WAR_NAME=form-submission-1.0
-export WAR_FILENAME=$WAR_NAME.war
+export WAR_NAME=jsp-crud-1.0;
+export WAR_FILENAME=$WAR_NAME.war;
 
 echo "[INFO] - Deploying '$WAR_FILENAME' into '$TOMCAT_CONTAINER_NAME' container...";
 
@@ -14,6 +14,7 @@ docker cp ./target/$WAR_FILENAME $TOMCAT_CONTAINER_NAME:$TARGET_DIR;
 
 # Shutdown the Tomcat server
 docker exec $TOMCAT_CONTAINER_NAME sh -c "./bin/shutdown.sh";
+sleep 2s;
 
 # Restart the Tomcat server
 docker start $TOMCAT_CONTAINER_NAME;
