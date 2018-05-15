@@ -19,10 +19,11 @@ docker exec -it $TOMCAT_CONTAINER_NAME sh -c "./bin/shutdown.sh";
 # Restart the Tomcat server
 docker start $TOMCAT_CONTAINER_NAME;
 
+echo "[INFO] - '$WAR_FILENAME' has been deployed into '$TOMCAT_CONTAINER_NAME' container.";
+
 unset APP_PATH;
 unset CATALINA_HOME;
 unset TARGET_DIR;
 unset TOMCAT_CONTAINER_NAME;
 unset WAR_NAME;
 unset WAR_FILENAME;
-
