@@ -20,7 +20,6 @@ public class Schedule {
     this.participants = participants;
     this.description = description;
     this.organiser = organiser;
-    this.title = title;
   }
 
   public void setId(int id) {
@@ -40,7 +39,7 @@ public class Schedule {
   }
 
   public Date getEndDate() {
-    return this.beginDate;
+    return this.endDate;
   }
 
   public void setEndDate(Date endDate) {
