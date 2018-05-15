@@ -8,7 +8,7 @@ public class Contact{
   public enum Type {
     BUSINESS("Business"), FAMILY("Family"), FRIEND("Friend");
 
-    private String value;
+    public String value;
     private Type(String value){
       this.value = value;
     }
