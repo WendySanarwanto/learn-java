@@ -18,7 +18,7 @@ public class Main extends HttpServlet{
           "<li><b>Type&nbsp;</b>: %s</li>" +
         "</ul>\n" +
         "<p>" +          
-          "<a href=\"ContactEntry.html\">"  +
+          "<a href=\"index.html\">"  +
             "<span>Back to Entry form.</span>"  +
           "</a>" +
         "</p>" +
