@@ -1,11 +1,12 @@
 package me.wendysa.contactsdemo.models;
 
-import junit.framework.*;
+import org.junit.*;
+
 import me.wendysa.contactsdemo.models.Contact;
 
 import static org.junit.Assert.*;
 
-public class ContactTest extends TestCase {
+public class ContactTest {
   private final String name = "John Smith";
   private final String email = "john.smith@gmail.com";
   private final Contact.Type type = Contact.Type.BUSINESS;
@@ -14,6 +15,7 @@ public class ContactTest extends TestCase {
   /**
    * Test Contact's toString method
    */
+  @Test
   public void testContactDefaultStringOutput() {
     Contact contact = createContactTestData();
     String expected = "\nName: "+contact.getName()+"\n"+
@@ -22,6 +24,16 @@ public class ContactTest extends TestCase {
 
     assertEquals(contact.toString(), expected);
   }
+
+  @Test
+  public void testContactProperties() {
+    Contact contact = createContactTestData();
+    assertEquals(contact.getEmail(), email);
+    assertEquals(contact.getName(), name);
+    assertEquals(contact.getId(), id);
+    assertEquals(contact.getType(), type);
+  }
+
 
   /**
    * A helper for creating Contact test data.
