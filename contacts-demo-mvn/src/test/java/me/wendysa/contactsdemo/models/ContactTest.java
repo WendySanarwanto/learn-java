@@ -12,34 +12,6 @@ public class ContactTest extends TestCase {
   private final int id = 100;
 
   /**
-   * Create the test case
-   *
-   * @param testName name of the test case
-   */
-  public ContactTest(String testName) {
-    super(testName);
-  }
-
-  /**
-   * @return the suite of tests being tested
-   */
-  public static Test suite() {
-    return new TestSuite(ContactTest.class);
-  }
-
-  /**
-   * Test Contact instance's properties
-   */
-  public void testContactProperties() {
-    Contact contact = createContactTestData();
-
-    assertEquals(id, contact.getId());
-    assertEquals(name, contact.getName());
-    assertEquals(email, contact.getEmail());
-    assertEquals(Contact.Type.BUSINESS, contact.getType());
-  }
-
-  /**
    * Test Contact's toString method
    */
   public void testContactDefaultStringOutput() {

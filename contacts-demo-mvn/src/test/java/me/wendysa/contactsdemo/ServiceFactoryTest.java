@@ -10,22 +10,6 @@ import me.wendysa.contactsdemo.services.*;
 public class ServiceFactoryTest extends TestCase {
 
   /**
-   * Create the test case
-   *
-   * @param testName name of the test case
-   */
-  public ServiceFactoryTest(String testName) {
-    super(testName);
-  }
-
-  /**
-   * @return the suite of tests being tested
-   */
-  public static Test suite() {
-    return new TestSuite(ServiceFactoryTest.class);
-  }
-
-  /**
    * Get ContactService instance for MySql.
    */
   public void testGetContactServiceInstanceForMySql() {
