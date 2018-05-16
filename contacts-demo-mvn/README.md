@@ -33,3 +33,5 @@ This is a simple command line program written by using Java programming language
 7. Restore the required database through executing `ddl.sql` script in a MySQL client tool.
 
 8. Invoke `mvn exec:java -Dexec.args="-db:mysql"` command to run the demo app.
+
+9. To run the unit test, invoke `mvn clean package` command. The code coverage report is located in `target/site/jacoco-ut/index.html` .
