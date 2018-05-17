@@ -42,4 +42,23 @@ public class ContactServiceTest {
 
     assertArrayEquals(contacts, expectedContacts);
   }
+
+  @Test
+  public void testCreateNullEmailContact() {
+    Contact nullContact = contactService.createContact("Wendy Sanarwanto", null, Contact.Type.FRIEND);
+    assertNull(nullContact);
+  }
+
+  @Test
+  public void testCreateNullNameContact() {
+    Contact nullContact = contactService.createContact(null, "wendy.sanarwanto@gmail.com", Contact.Type.FRIEND);
+    assertNull(nullContact);
+  }
+
+  @Test
+  public void testCreateNullTypeContact() {
+    Contact nullContact = contactService.createContact("Wendy Sanarwanto", "wendy.sanarwanto@gmail.com", null);
+    assertNull(nullContact);
+  }
+
 };

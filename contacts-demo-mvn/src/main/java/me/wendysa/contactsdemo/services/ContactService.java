@@ -12,12 +12,15 @@ public class ContactService extends ServiceBase<Contact> implements IContactBeha
 
   @Override
   public Contact createContact(String name, String email, Contact.Type contactType)  {
+    // if one of the parameters is null, then return null
+    if ((name == null) || (email == null) || (contactType == null)){
+      return null;
+    }
+
     Contact newContact = new Contact(name, email);
     newContact.setType(contactType);
     Contact pushedContact = this.push(newContact);
-    if (pushedContact != null) {
-      this.onContactPushed(pushedContact);
-    }
+    this.onContactPushed(pushedContact);
     return pushedContact;
   }
 
