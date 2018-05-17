@@ -10,7 +10,11 @@ public class ScheduleRepository implements IRepository<Schedule> {
 
   @Override
   public Schedule push(Schedule newSchedule) {
-    return storage.add(newSchedule) ? newSchedule : null;
+    if (newSchedule != null) {
+      storage.add(newSchedule);
+      return newSchedule;
+    }
+    return null;
   }
 
   @Override

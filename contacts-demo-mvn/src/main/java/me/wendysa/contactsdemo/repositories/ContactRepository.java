@@ -11,7 +11,9 @@ public class ContactRepository implements IRepository<Contact> {
   @Override
   public Contact push(Contact newContact) {
     String email = newContact != null ? newContact.getEmail() : null;
-    this.storage.put(email, newContact);
+    if (email != null) {
+      this.storage.put(email, newContact);
+    }
     return newContact;
   }
 
