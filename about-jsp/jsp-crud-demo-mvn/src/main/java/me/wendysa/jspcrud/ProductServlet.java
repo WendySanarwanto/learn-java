@@ -11,6 +11,7 @@ import me.wendysa.jspcrud.repositories.*;
 import me.wendysa.jspcrud.services.JsonUtilService;
 
 public class ProductServlet extends HttpServlet {
+  private static final long serialVersionUID = 2859900959076091970L;
   private static final String JDBC_LOCAL_URL = "jdbc:mysql://172.17.0.3:3306/estore?user=root&password=test123&useSSL=false";
   private ProductMySqlRepository productRepo = new ProductMySqlRepository(JDBC_LOCAL_URL);
 
@@ -26,7 +27,7 @@ public class ProductServlet extends HttpServlet {
 
     try { 
       insertNewRecord(request);
-      response.sendRedirect("main.jsp");
+      response.sendRedirect("index.jsp");
     } catch(SQLException | IOException err) {
       getServletContext().log("An exception occured", err);
     }
@@ -37,7 +38,7 @@ public class ProductServlet extends HttpServlet {
     throws ServletException, IOException {
     try{
       deleteRecord(request);
-      // response.sendRedirect("main.jsp");
+      // response.sendRedirect("index.jsp");
     } catch(SQLException | IOException err) {
       getServletContext().log("An exception occured", err);
     }
@@ -56,7 +57,7 @@ public class ProductServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(stringifiedUpdatedRecord);
       } else {
-        response.sendRedirect("main.jsp");
+        response.sendRedirect("index.jsp");
       }
     } catch(SQLException | IOException err) {
       getServletContext().log("An exception occured", err);
