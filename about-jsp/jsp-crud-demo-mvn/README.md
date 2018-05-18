@@ -22,4 +22,4 @@ A JSP based web application which does Creating, Retrieving, Updating, Deleting 
 
 9. Run `mvn clean package && ./deploy.sh` command.
 
-10. Browse the page on http://localhost:4040/main.jsp
+10. Browse the page on <http://localhost:4040/jsp-crud-1.0/>
