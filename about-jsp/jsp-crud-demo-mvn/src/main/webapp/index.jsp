@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 
-<%@ taglib uri="WEB-INF/jsp-crud.tld" prefix="crud" %>
+<%@ taglib uri="WEB-INF/price.tld" prefix="crud" %>
 
 <html>
   <head><title>Products Maintenance page</title></head>
